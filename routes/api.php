@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
+use \App\Http\Controllers\Api\EmployeeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,3 +32,10 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
 
 });
+//Emloyee routes
+//Route::apiResource('employee',EmployeeController::class);
+Route::resource('employee', EmployeeController::class)->except([
+   'index','create'
+]);
+Route::post('employee', [EmployeeController::class, 'index']);
+Route::post('employee/store', [EmployeeController::class, 'store']);
