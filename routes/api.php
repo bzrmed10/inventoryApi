@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\Api\EmployeeController;
+use \App\Http\Controllers\Api\SupplierController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,9 +34,13 @@ Route::group([
 
 });
 //Emloyee routes
-//Route::apiResource('employee',EmployeeController::class);
-Route::resource('employee', EmployeeController::class)->except([
-   'index','create'
-]);
+
+Route::resource('employee', EmployeeController::class)->except(['index','create']);
 Route::post('employee', [EmployeeController::class, 'index']);
 Route::post('employee/store', [EmployeeController::class, 'store']);
+
+//Supplier Routes
+
+Route::apiResource('supplier',SupplierController::class)->except(['create','edit','index']);
+Route::post('supplier', [SupplierController::class, 'index']);
+Route::post('supplier/store', [SupplierController::class, 'store']);
