@@ -7,6 +7,7 @@ use \App\Http\Controllers\Api\EmployeeController;
 use \App\Http\Controllers\Api\SupplierController;
 use \App\Http\Controllers\Api\CategoryController;
 use \App\Http\Controllers\Api\ProductController;
+use \App\Http\Controllers\Api\ExpenseController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -62,3 +63,9 @@ Route::get('categories', [CategoryController::class, 'getAllCategories']);
 Route::apiResource('product',ProductController::class)->except(['create','edit','index']);
 Route::post('product', [ProductController::class, 'index']);
 Route::post('product/store', [ProductController::class, 'store']);
+
+//Expense Route
+
+Route::apiResource('expense',ExpenseController::class)->except(['create','edit','index']);
+Route::post('expense', [ExpenseController::class, 'index']);
+Route::post('expense/store', [ExpenseController::class, 'store']);
