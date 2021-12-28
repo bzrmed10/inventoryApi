@@ -95,4 +95,14 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id)->delete();
         return response()->json($category);
     }
+
+
+
+    public function getAllCategories(){
+
+        $categories = Category::all();
+
+        return response()->json($categories);
+
+    }
 }

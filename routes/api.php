@@ -6,6 +6,7 @@ use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\Api\EmployeeController;
 use \App\Http\Controllers\Api\SupplierController;
 use \App\Http\Controllers\Api\CategoryController;
+use \App\Http\Controllers\Api\ProductController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,9 +46,19 @@ Route::post('employee/store', [EmployeeController::class, 'store']);
 Route::apiResource('supplier',SupplierController::class)->except(['create','edit','index']);
 Route::post('supplier', [SupplierController::class, 'index']);
 Route::post('supplier/store', [SupplierController::class, 'store']);
+Route::get('suppliers', [SupplierController::class, 'getAllSuppliers']);
+
 
 //Category Routes
 
 Route::apiResource('category',CategoryController::class)->except(['create','edit','index']);
 Route::post('category', [CategoryController::class, 'index']);
 Route::post('category/store', [CategoryController::class, 'store']);
+Route::get('categories', [CategoryController::class, 'getAllCategories']);
+
+
+//Product Routes
+
+Route::apiResource('product',ProductController::class)->except(['create','edit','index']);
+Route::post('product', [ProductController::class, 'index']);
+Route::post('product/store', [ProductController::class, 'store']);

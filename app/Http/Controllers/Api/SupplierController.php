@@ -112,4 +112,12 @@ class SupplierController extends Controller
 
         return  response()->json($supplier);
     }
+
+    public function getAllSuppliers(){
+
+        $suppliers = Supplier::all();
+
+        return response()->json($suppliers);
+
+    }
 }
