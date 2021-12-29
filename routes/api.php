@@ -8,6 +8,7 @@ use \App\Http\Controllers\Api\SupplierController;
 use \App\Http\Controllers\Api\CategoryController;
 use \App\Http\Controllers\Api\ProductController;
 use \App\Http\Controllers\Api\ExpenseController;
+use \App\Http\Controllers\Api\SalaryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -69,3 +70,10 @@ Route::post('product/store', [ProductController::class, 'store']);
 Route::apiResource('expense',ExpenseController::class)->except(['create','edit','index']);
 Route::post('expense', [ExpenseController::class, 'index']);
 Route::post('expense/store', [ExpenseController::class, 'store']);
+
+//Expense Salary
+
+Route::post('salary/paysalary', [SalaryController::class, 'paySalary']);
+Route::get('salary/allmonths', [SalaryController::class, 'allSalary']);
+Route::post('salary/month', [SalaryController::class, 'allSalaryByMonth']);
+Route::delete('salary/{id}', [SalaryController::class, 'deletePay']);
