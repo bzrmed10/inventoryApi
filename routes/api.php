@@ -9,6 +9,7 @@ use \App\Http\Controllers\Api\CategoryController;
 use \App\Http\Controllers\Api\ProductController;
 use \App\Http\Controllers\Api\ExpenseController;
 use \App\Http\Controllers\Api\SalaryController;
+use \App\Http\Controllers\Api\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -64,6 +65,7 @@ Route::get('categories', [CategoryController::class, 'getAllCategories']);
 Route::apiResource('product',ProductController::class)->except(['create','edit','index']);
 Route::post('product', [ProductController::class, 'index']);
 Route::post('product/store', [ProductController::class, 'store']);
+Route::put('product/quantity/{id}', [ProductController::class, 'changeQty']);
 
 //Expense Route
 
@@ -77,3 +79,9 @@ Route::post('salary/paysalary', [SalaryController::class, 'paySalary']);
 Route::get('salary/allmonths', [SalaryController::class, 'allSalary']);
 Route::post('salary/month', [SalaryController::class, 'allSalaryByMonth']);
 Route::delete('salary/{id}', [SalaryController::class, 'deletePay']);
+
+//Custumers routes
+
+Route::resource('customer', CustomerController::class)->except(['index','create']);
+Route::post('customer', [CustomerController::class, 'index']);
+Route::post('customer/store', [CustomerController::class, 'store']);

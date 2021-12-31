@@ -33,6 +33,8 @@ class ProductController extends Controller
 
         foreach ($products as $product){
             $product->product_image =  $product->product_image!= null ? 'http://127.0.0.1/inventory/public/'.$product->product_image : null;
+            $product->status = ($product->product_quantity > 0) ? '<span class="badge badge-pill badge-success">Available</span>'
+                : '<span class="badge badge-pill badge-danger">Sock Out</span>';
         }
         $totalItem = Product::all()->count();
         $response['data'] = $products;
@@ -186,6 +188,17 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id)->delete();
+        return response()->json($product);
+    }
+
+    public function changeQty(Request $request , $id){
+
+
+        $newQty = $request->product_quantity;
+        $data = array();
+        $data['product_quantity'] = $newQty ;
+        $product = DB::table('products')->where('id',$id)->update($data);
+
         return response()->json($product);
     }
 }

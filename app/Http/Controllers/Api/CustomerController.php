@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Model\Employee;
+use App\Models\Model\Customer;
 use Illuminate\Http\Request;
 use Image;
 
-
-class EmployeeController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,18 +16,17 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-       $skip = $request->skip;
-       $limit = $request->limit;
-       $employees = Employee::all()->skip($skip)->take($limit);
-       foreach ($employees as $employe){
-           $employe->photo =  $employe->photo!= null ? 'http://127.0.0.1/inventory/public/'.$employe->photo : null;
-       }
-       $totalItem = Employee::all()->count();
-       $response['data'] = $employees;
-       $response['total'] = $totalItem;
+        $skip = $request->skip;
+        $limit = $request->limit;
+        $customers = Customer::all()->skip($skip)->take($limit);
+        foreach ($customers as $customer){
+            $customer->photo =  $customer->photo!= null ? 'http://127.0.0.1/inventory/public/'.$customer->photo : null;
+        }
+        $totalItem = Customer::all()->count();
+        $response['data'] = $customers;
+        $response['total'] = $totalItem;
         return response()->json($response);
     }
-
 
 
     /**
@@ -40,11 +38,11 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $dataValidation = $request->validate([
-                'fullname' => 'required|unique:employees|max:255',
+                'fullname' => 'required|unique:customers|max:255',
                 'email' => 'required|email',
                 'phone' => 'required',
                 'adress' => 'required',
-                'salary' => 'required'
+
             ]
         );
 
@@ -58,26 +56,20 @@ class EmployeeController extends Controller
             $upload_path = 'backend/employee/';
             $image_url = $upload_path.$name;
             $img->save($image_url);
-            $employee = new Employee();
-            $employee->fullname = $request->fullname;
-            $employee->email = $request->email;
-            $employee->phone = $request->phone;
-            $employee->adress = $request->adress;
-            $employee->nid = $request->nid;
-            $employee->salary = $request->salary;
-            $employee->joining_date = $request->joining_date;
-            $employee->photo = $image_url;
-            $employee->save();
+            $customer = new Customer();
+            $customer->fullname = $request->fullname;
+            $customer->email = $request->email;
+            $customer->phone = $request->phone;
+            $customer->adress = $request->adress;
+            $customer->photo = $image_url;
+            $customer->save();
         }else{
-            $employee = new Employee;
-            $employee->fullname = $request->fullname;
-            $employee->email = $request->email;
-            $employee->phone = $request->phone;
-            $employee->adress = $request->adress;
-            $employee->nid = $request->nid;
-            $employee->salary = $request->salary;
-            $employee->joining_date = $request->joining_date;
-            $employee->save();
+            $customer = new Employee;
+            $customer->fullname = $request->fullname;
+            $customer->email = $request->email;
+            $customer->phone = $request->phone;
+            $customer->adress = $request->adress;
+            $customer->save();
         }
     }
 
@@ -89,10 +81,9 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::findOrFail($id);
-        return response()->json($employee);
+        $customer = Customer::findOrFail($id);
+        return response()->json($customer);
     }
-
 
 
     /**
@@ -109,7 +100,6 @@ class EmployeeController extends Controller
                 'email' => 'required|email',
                 'phone' => 'required',
                 'adress' => 'required',
-                'salary' => 'required'
             ]
         );
         $data = array();
@@ -117,11 +107,8 @@ class EmployeeController extends Controller
         $data['email'] = $request->email;
         $data['phone'] = $request->phone;
         $data['adress'] = $request->adress;
-        $data['joining_date'] = $request->joining_date;
-        $data['nid'] = $request->nid;
-        $data['salary'] = $request->salary;
         $image = $request->fileSource;
-        $img = Employee::findOrFail($id);
+        $img = Customer::findOrFail($id);
         $img_path = $img->photo;
         if($image && $image != ""){
             $position = strpos($image , ';');
@@ -129,7 +116,7 @@ class EmployeeController extends Controller
             $ext = explode('/',$sub)[1];
             $name = time().".".$ext;
             $img = Image::make($image)->resize(240,240);
-            $upload_path = 'backend/employee/';
+            $upload_path = 'backend/customers/';
             $image_url = $upload_path.$name;
             $succes = $img->save($image_url);
 
@@ -138,13 +125,13 @@ class EmployeeController extends Controller
                 if($img_path){
                     unlink($img_path);
                 }
-                $user = Employee::findOrFail($id)->update($data);
+                $user = Customer::findOrFail($id)->update($data);
             }
         }else{
 
             $oldPhoto = $img_path;
             $data['photo'] = $oldPhoto;
-            $user = Employee::findOrFail($id)->update($data);
+            $user = Customer::findOrFail($id)->update($data);
         }
 
         return response()->json($user);
@@ -159,12 +146,12 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        $employee = Employee::findOrFail($id);
-        $photo = $employee->photo;
+        $customer = Customer::findOrFail($id);
+        $photo = $customer->photo;
         if($photo){
             unlink($photo);
         }
-        $employee->delete();
-        return  response()->json($employee);
+        $customer->delete();
+        return  response()->json($customer);
     }
 }
