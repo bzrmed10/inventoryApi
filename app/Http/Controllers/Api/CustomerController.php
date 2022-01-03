@@ -154,4 +154,10 @@ class CustomerController extends Controller
         $customer->delete();
         return  response()->json($customer);
     }
+
+    public function getAllCustomers(){
+
+        $customers = Customer::all();
+        return response()->json($customers);
+    }
 }

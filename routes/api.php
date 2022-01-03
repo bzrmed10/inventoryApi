@@ -10,6 +10,8 @@ use \App\Http\Controllers\Api\ProductController;
 use \App\Http\Controllers\Api\ExpenseController;
 use \App\Http\Controllers\Api\SalaryController;
 use \App\Http\Controllers\Api\CustomerController;
+use \App\Http\Controllers\Api\PosController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -66,6 +68,7 @@ Route::apiResource('product',ProductController::class)->except(['create','edit',
 Route::post('product', [ProductController::class, 'index']);
 Route::post('product/store', [ProductController::class, 'store']);
 Route::put('product/quantity/{id}', [ProductController::class, 'changeQty']);
+Route::post('product/search', [ProductController::class, 'searchProduct']);
 
 //Expense Route
 
@@ -84,4 +87,13 @@ Route::delete('salary/{id}', [SalaryController::class, 'deletePay']);
 
 Route::resource('customer', CustomerController::class)->except(['index','create']);
 Route::post('customer', [CustomerController::class, 'index']);
+Route::get('customer', [CustomerController::class, 'getAllCustomers']);
 Route::post('customer/store', [CustomerController::class, 'store']);
+
+//Pos Routes
+Route::post('pos/addToCart', [PosController::class, 'addToCart']);
+Route::post('pos/incrementProduct', [PosController::class, 'incrementProduct']);
+Route::post('pos/decrementProduct', [PosController::class, 'decrementProduct']);
+Route::post('pos/orderDone', [PosController::class, 'orderDone']);
+Route::get('pos/getAllCart', [PosController::class, 'getAllCart']);
+Route::delete('pos/{id}', [PosController::class, 'deleteFromCart']);

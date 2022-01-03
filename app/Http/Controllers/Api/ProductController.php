@@ -201,4 +201,41 @@ class ProductController extends Controller
 
         return response()->json($product);
     }
+
+    public function searchProduct(Request $request){
+
+        $skip = $request->skip;
+        $limit = $request->limit;
+        if(isset($request->name)){
+            $search = $request->name .'%';
+            $products = DB::table('products')->where('product_name','like',$search)
+                ->skip($skip)->take($limit)->get();
+            $totalItem = DB::table('products')->where('product_name','like',$search)->count();
+
+        }elseif (isset($request->category)){
+            $products = DB::table('products')->where('category_id','=',$request->category)
+                ->skip($skip)->take($limit)->get();
+            $totalItem = DB::table('products')->where('category_id','=',$request->category)->count();
+
+        }
+        elseif (isset($request->supplier)){
+            $products = DB::table('products')->where('supplier_id','=',$request->supplier)
+                ->skip($skip)->take($limit)->get();
+            $totalItem = DB::table('products')->where('supplier_id','=',$request->supplier)->count();
+
+        }
+
+
+
+
+
+        foreach ($products as $product){
+            $product->product_image =  $product->product_image!= null ? 'http://127.0.0.1/inventory/public/'.$product->product_image : null;
+            $product->status = ($product->product_quantity > 0) ? '<span class="badge badge-pill badge-success">Available</span>'
+                : '<span class="badge badge-pill badge-danger">Sock Out</span>';
+        }
+        $response['data'] = $products;
+        $response['total'] = $totalItem;
+        return response()->json($response);
+    }
 }
