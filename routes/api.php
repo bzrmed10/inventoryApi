@@ -11,6 +11,7 @@ use \App\Http\Controllers\Api\ExpenseController;
 use \App\Http\Controllers\Api\SalaryController;
 use \App\Http\Controllers\Api\CustomerController;
 use \App\Http\Controllers\Api\PosController;
+use \App\Http\Controllers\Api\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,3 +98,8 @@ Route::post('pos/decrementProduct', [PosController::class, 'decrementProduct']);
 Route::post('pos/orderDone', [PosController::class, 'orderDone']);
 Route::get('pos/getAllCart', [PosController::class, 'getAllCart']);
 Route::delete('pos/{id}', [PosController::class, 'deleteFromCart']);
+
+//Order Routes
+Route::post('order/all', [OrderController::class, 'getAllOrders']);
+Route::get('order/detail/{id}', [OrderController::class, 'getOrderDetail']);
+
