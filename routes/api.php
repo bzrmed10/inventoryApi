@@ -12,6 +12,7 @@ use \App\Http\Controllers\Api\SalaryController;
 use \App\Http\Controllers\Api\CustomerController;
 use \App\Http\Controllers\Api\PosController;
 use \App\Http\Controllers\Api\OrderController;
+use \App\Http\Controllers\Api\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,5 +102,12 @@ Route::delete('pos/{id}', [PosController::class, 'deleteFromCart']);
 
 //Order Routes
 Route::post('order/all', [OrderController::class, 'getAllOrders']);
+Route::post('order/today', [OrderController::class, 'getTodayOrders']);
 Route::get('order/detail/{id}', [OrderController::class, 'getOrderDetail']);
 
+//Dashboard Route
+
+Route::get('dashboard/getStatistics', [DashboardController::class, 'getStatistics']);
+Route::get('dashboard/getSalesByCategory', [DashboardController::class, 'getSalesByCategory']);
+Route::get('dashboard/getTotalOrdersProduct', [DashboardController::class, 'getTotalOrdersProduct']);
+Route::get('dashboard/getSalesBenefits', [DashboardController::class, 'getSalesBenefits']);

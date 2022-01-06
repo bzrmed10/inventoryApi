@@ -31,6 +31,32 @@ class OrderController extends Controller
 
     }
 
+
+    public function getTodayOrders(Request $request){
+        $today = date('d/m/Y');
+        $skip = $request->skip;
+        $limit = $request->limit;
+
+        $orders = DB::table('orders')
+            ->join('customers','orders.customer_id','=','customers.id')
+            ->select(['customers.fullname','orders.id','orders.total'])
+            ->where('orders.order_date',$today)
+            ->orderBy('orders.id','DESC')
+            ->skip($skip)
+            ->take($limit)->get();
+
+        $totalItem = DB::table('orders')
+            ->join('customers','orders.customer_id','=', 'customers.id')
+            ->where('orders.order_date',$today)
+            ->orderBy('orders.id','DESC')
+            ->count();
+
+        $response['data'] = $orders;
+        $response['total'] = $totalItem;
+        return response()->json($response);
+
+    }
+
     public function getOrderDetail($id){
         $productsDetail = DB::table('order_details')
             ->join('products','order_details.product_id','=','products.id')
@@ -50,4 +76,6 @@ class OrderController extends Controller
         $response['order'] = $order;
         return response()->json($response);
     }
+
+
 }
