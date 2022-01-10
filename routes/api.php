@@ -40,7 +40,7 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
-
+    Route::get('user',[AuthController::class, 'user']);
 });
 //Emloyee routes
 
@@ -111,3 +111,4 @@ Route::get('dashboard/getStatistics', [DashboardController::class, 'getStatistic
 Route::get('dashboard/getSalesByCategory', [DashboardController::class, 'getSalesByCategory']);
 Route::get('dashboard/getTotalOrdersProduct', [DashboardController::class, 'getTotalOrdersProduct']);
 Route::get('dashboard/getSalesBenefits', [DashboardController::class, 'getSalesBenefits']);
+Route::get('dashboard/getTopProducts', [DashboardController::class, 'getTopProducts']);

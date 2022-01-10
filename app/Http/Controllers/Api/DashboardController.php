@@ -40,14 +40,13 @@ class DashboardController extends Controller
         $orders = DB::table('orders')
             ->select( 'orders.order_date',DB::raw('count(orders.id) as total'))
             ->groupBy('orders.order_date')
-            ->orderBy('orders.id')
+            ->orderBy('orders.id','DESC')
             ->take(7)
             ->get();
         $qtyproducts = DB::table('orders')
             ->select( 'orders.order_date',DB::raw('sum(orders.qty) as qty'))
             ->groupBy('orders.order_date')
-            ->orderBy('orders.id')
-            ->take(7)
+            ->orderBy('orders.id','DESC')
             ->take(7)
             ->get();
         $response['days'] = [];
@@ -74,7 +73,7 @@ class DashboardController extends Controller
         $sales = DB::table('orders')
             ->select( 'orders.order_date',DB::raw('sum(orders.total) as totalTva'),DB::raw('sum(orders.sub_total) as total'))
             ->groupBy('orders.order_date')
-            ->orderBy('orders.id')
+            ->orderBy('orders.id','DESC')
             ->take(7)
             ->get();
         $netsales = DB::table('orders')
@@ -82,7 +81,7 @@ class DashboardController extends Controller
             ->join('products', 'products.id', '=', 'order_details.product_id')
             ->select( 'orders.order_date',DB::raw('sum(products.buying_price * order_details.product_qty) as benefits'))
             ->groupBy('orders.order_date')
-            ->orderBy('orders.id')->get();
+            ->orderBy('orders.id','DESC')->take(7)->get();
 
 
         $response['days'] = [];
@@ -102,5 +101,22 @@ class DashboardController extends Controller
         }
 
         return response()->json($response);
+    }
+
+
+    public function getTopProducts(){
+        $products = DB::table('order_details')
+            ->join('products', 'products.id', '=', 'order_details.product_id')
+            ->select( 'products.product_name','products.product_image',DB::raw('sum(order_details.product_qty) as qty'))
+            ->groupBy('products.product_name','products.product_image')
+            ->orderBy('qty' , 'DESC')
+            ->take(5)
+            ->get();
+
+        foreach ($products as $product){
+            $product->product_image =  $product->product_image!= null ? 'http://127.0.0.1/inventory/public/'.$product->product_image : null;
+        }
+
+        return response()->json($products);
     }
 }
